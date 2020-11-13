@@ -14,23 +14,21 @@ import os
 def main():
     # Check if user is using MacOS or Windows
     def finduseros():
-        global useros
+        global user_os
         global cd
-        filename = "frontend.py"
-        useros = platform.system()
-        if "Darwin" in useros:
-            useros= "macos"
+        file_name = "frontend.py"
+        user_os = platform.system()
+        if "Darwin" in user_os:
+            user_os= "macos"
             cd = "chromedriverMac"
-        if "Windows" in useros:
-            useros="windows"
+        if "Windows" in user_os:
+            user_os= "windows"
             cd = "chromedriverWindows"
 
         userpath = os.getcwd()
         cd = str(userpath) + "/" + cd
-        #print(userpath)
-        #print(cd)
 
-        return useros
+        return user_os
 
     def logininfo():
         global username, password
@@ -38,6 +36,7 @@ def main():
         password = SG.PopupGetText('Please type your password:', 'Password', password_char='*')
         return username, password
 
+    # TODO: refactor this function
     def crn():
         global crn1, crn2, crn3, crn4, crn5
         # Query user for CRN
@@ -67,6 +66,7 @@ def main():
             SG.Popup('This CRN is not valid. Please try again.')
             crn5 = SG.PopupGetText('Please type your fifth desired CRN: (If unneccesary, type "none")', 'CRN5')
 
+        # TODO: is this logging necessary?
         # Print CRNs
         print(crn1, crn2, crn3)
         if crn4 is not "none":
@@ -85,6 +85,7 @@ def main():
     # Run crn
     crn()
 
+    # TODO: make run bot its own class or object seperated from front-end
     def runbot():
         # Set browser to Chrome
         browser = webdriver.Chrome(cd)
