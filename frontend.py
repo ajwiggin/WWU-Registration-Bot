@@ -42,27 +42,28 @@ def main():
         # Query user for CRN
         crn1 = SG.PopupGetText('Please type your first desired CRN:', 'CRN 1')
 
-        while len(crn1) is not 5:
+        # TODO: this could be simplified for sure
+        while len(crn1) != 5:
             SG.Popup('This CRN is not valid. Please try again.')
             crn1 = SG.PopupGetText('Please type your first desired CRN:', 'CRN 1')
 
         crn2 = SG.PopupGetText('Please type your second desired CRN:', 'CRN 2')
-        while len(crn2) is not 5:
+        while len(crn2) != 5:
             SG.Popup('This CRN is not valid. Please try again.')
             crn2 = SG.PopupGetText('Please type your second desired CRN:', 'CRN 2')
 
         crn3 = SG.PopupGetText('Please type your third desired CRN:', 'CRN 3')
-        while len(crn3) is not 5:
+        while len(crn3) != 5:
             SG.Popup('This CRN is not valid. Please try again.')
             crn3 = SG.PopupGetText('Please type your third desired CRN:', 'CRN 3')
 
         crn4 = SG.PopupGetText('Please type your fourth desired CRN: (If unneccesary, type "none")', 'CRN4')
-        if (len(crn4) is not 5) and crn4 != "none":
+        if (len(crn4) != 5) and crn4 != "none":
             SG.Popup('This CRN is not valid. Please try again.')
             crn5 = SG.PopupGetText('Please type your fourth desired CRN: (If unneccesary, type "none")', 'CRN4')
 
         crn5 = SG.PopupGetText('Please type your fifth desired CRN: (If unneccesary, type "none")', 'CRN5')
-        if (len(crn5) is not 5) and crn5 != "none":
+        if (len(crn5) != 5) and crn5 != "none":
             SG.Popup('This CRN is not valid. Please try again.')
             crn5 = SG.PopupGetText('Please type your fifth desired CRN: (If unneccesary, type "none")', 'CRN5')
 
