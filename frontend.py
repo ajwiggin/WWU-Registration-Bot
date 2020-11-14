@@ -2,19 +2,13 @@
 # Software under the 0BSD license, aka do whatever you'd like with it!
 
 from selenium.webdriver.support.ui import Select
-# Import platform to receive system info from user
-# Import Selenium -> webdriver
 from selenium import webdriver
-# Import PySimpleGUI
 import PySimpleGUI as SG
-# Import os
 import os
 from user import User
 
 
 def main():
-    # Check if user is using MacOS or Windows
-
     # TODO: refactor this function
     def crn():
         global crn1, crn2, crn3, crn4, crn5
