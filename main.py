@@ -1,10 +1,12 @@
 # Please only use this program in good faith.
 # Software under the 0BSD license, aka do whatever you'd like with it!
 
-from selenium.webdriver.support.ui import Select
+import sched
+import time
+
 from selenium import webdriver
-import PySimpleGUI as SG
-import os
+from selenium.webdriver.support.ui import Select
+
 from user import User
 
 
@@ -46,14 +48,14 @@ def run_bot(user):
     submit_CRNs.click()
 
 
-def main():
-    # TODO: refactor this function
+def run_bot_at_time(user: User):
+    scheduler = sched.scheduler(time.localtime, time.sleep)
+    scheduler.enterabs(time.strptime(user.registration_time), 0, run_bot)
+    scheduler.run()
 
+
+if __name__ == "__main__":
     user = User()
     cd = user.get_user_os()
-
     user.get_crn()
-    run_bot(user)
-
-
-main()
+    run_bot_at_time(user)
