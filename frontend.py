@@ -3,38 +3,17 @@
 
 from selenium.webdriver.support.ui import Select
 # Import platform to receive system info from user
-import platform
 # Import Selenium -> webdriver
 from selenium import webdriver
 # Import PySimpleGUI
 import PySimpleGUI as SG
 # Import os
 import os
+from user import User
+
 
 def main():
     # Check if user is using MacOS or Windows
-    def finduseros():
-        global user_os
-        global cd
-        file_name = "frontend.py"
-        user_os = platform.system()
-        if "Darwin" in user_os:
-            user_os= "macos"
-            cd = "chromedriverMac"
-        if "Windows" in user_os:
-            user_os= "windows"
-            cd = "chromedriverWindows"
-
-        userpath = os.getcwd()
-        cd = str(userpath) + "/" + cd
-
-        return user_os
-
-    def logininfo():
-        global username, password
-        username = SG.PopupGetText('Please type your username:', 'Username')
-        password = SG.PopupGetText('Please type your password:', 'Password', password_char='*')
-        return username, password
 
     # TODO: refactor this function
     def crn():
@@ -57,15 +36,19 @@ def main():
             SG.Popup('This CRN is not valid. Please try again.')
             crn3 = SG.PopupGetText('Please type your third desired CRN:', 'CRN 3')
 
-        crn4 = SG.PopupGetText('Please type your fourth desired CRN: (If unneccesary, type "none")', 'CRN4')
+        crn4 = SG.PopupGetText('Please type your fourth desired CRN: (If unneccesary, type "none")',
+                               'CRN4')
         if (len(crn4) != 5) and crn4 != "none":
             SG.Popup('This CRN is not valid. Please try again.')
-            crn5 = SG.PopupGetText('Please type your fourth desired CRN: (If unneccesary, type "none")', 'CRN4')
+            crn5 = SG.PopupGetText(
+                'Please type your fourth desired CRN: (If unneccesary, type "none")', 'CRN4')
 
-        crn5 = SG.PopupGetText('Please type your fifth desired CRN: (If unneccesary, type "none")', 'CRN5')
+        crn5 = SG.PopupGetText('Please type your fifth desired CRN: (If unneccesary, type "none")',
+                               'CRN5')
         if (len(crn5) != 5) and crn5 != "none":
             SG.Popup('This CRN is not valid. Please try again.')
-            crn5 = SG.PopupGetText('Please type your fifth desired CRN: (If unneccesary, type "none")', 'CRN5')
+            crn5 = SG.PopupGetText(
+                'Please type your fifth desired CRN: (If unneccesary, type "none")', 'CRN5')
 
         # TODO: is this logging necessary?
         # Print CRNs
@@ -75,13 +58,8 @@ def main():
         if crn5 is not "none":
             print("CRN 5 not active.")
 
-
-
-    # Run finduseros
-    finduseros()
-
-    # Run logininfo
-    logininfo()
+    user = User()
+    cd = user.get_user_os()
 
     # Run crn
     crn()
@@ -97,12 +75,11 @@ def main():
         # Find username entry box
         usernameentry = browser.find_element_by_xpath("""//*[@id="username"]""")
         # Send username to username entry box
-        usernameentry.send_keys(username)
+        usernameentry.send_keys(user.get_username())
         # Find password entry box
         passwordentry = browser.find_element_by_xpath("""//*[@id="password"]""")
         # Send password to password entry box
-        passwordentry.send_keys(password)
-
+        passwordentry.send_keys(user.get_password())
 
         # Find "login" button, save to var
         loginbutton = browser.find_element_by_xpath("""//*[@id="fm1"]/section[4]/input[4]""")
@@ -132,6 +109,6 @@ def main():
     # Run runbot
     runbot()
 
+
 # Run main
 main()
-
