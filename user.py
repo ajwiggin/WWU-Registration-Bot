@@ -1,4 +1,4 @@
-import keyring
+import keyring, time
 import PySimpleGUI as SimpleGUI
 import platform
 import os
@@ -10,17 +10,34 @@ class User:
     os = ''
     CRNs = []
     service_id = 'wwu-reg-app'
-    USERNAME_KEY = 'cinema-voucher5-reattach'
 
     def __init__(self):
-        self.username = SimpleGUI.PopupGetText('Please type your username:', 'Username')
-        password = SimpleGUI.PopupGetText('Please type your password:', 'Password', password_char='*')
-        self.registration_time = SimpleGUI.PopupGetText('Please type in your registration time (Ex: Tue '
-                                                 'May 01 11:20:20 2020)', 'Registration Time')
+        self.username = get_input('Please type your username:', 'Username')
+        password = get_input('Please type your password:', 'Password', password_char='*')
         keyring.set_password(self.service_id, self.username, password)
+        # Get and validate registration time
+        while True:
+            timeStr = get_input('Please type in your registration time (Ex: March 3 2021 7:40 AM):', 'Registration Time')
+            try:
+                self.registration_time = time.strptime(timeStr, '%B %d %Y %I:%M %p')
+            except ValueError:
+                print("Invalid date/time input.")
+                continue
+            break
+        # Get CRNs
+        while len(self.CRNs) <= 10:
+            if (len(self.CRNs) < 1):
+                thisCRN = get_input("Enter CRN " + str(len(self.CRNs)+1) + "/10:", "CRN"  + str(len(self.CRNs)+1), allowEmptyInput=True)
+            else:
+                thisCRN = get_input("Enter CRN " + str(len(self.CRNs)+1) + "/10 ([enter] if finished):", "CRN"  + str(len(self.CRNs)+1), allowEmptyInput=True)
+            if thisCRN == "":
+                if (len(self.CRNs) == 0): continue
+                else: break
+            if thisCRN.isnumeric() and len(thisCRN) == 5:
+                self.CRNs.append(thisCRN)
 
     def get_username(self):
-        return keyring.get_password(self.service_id, self.USERNAME_KEY)
+        return self.username
 
     def get_password(self):
         return keyring.get_password(self.service_id, self.username)
@@ -41,17 +58,13 @@ class User:
 
         return user_os
 
-    def get_crn(self):
-        i = 0
-        crn_num = i + 1
-        has_crn = True
-        while has_crn:
-            if i > 2:
-                crn = SimpleGUI.PopupGetText(f'Please type CRN {crn_num}, or none if you are done:',
-                                      f'CRN {crn_num}')
-            else:
-                crn = SimpleGUI.PopupGetText(f'Please type CRN {crn_num}:', f'CRN {crn_num}')
-
-            has_crn = ((len(crn) != 5) or ((crn is not "None") or (crn is not None)))
-            self.CRNs[i] = crn
-            i += 1
+def get_input(message, title=None, password_char='', allowEmptyInput=False):
+    hasInvalid = False
+    while True:
+        thisInput = thisInput = SimpleGUI.PopupGetText(message, title, password_char=password_char)
+        if allowEmptyInput:
+            return thisInput
+        elif thisInput == "":
+            message = message if hasInvalid else "Invalid input. " + message
+            continue
+        return thisInput
